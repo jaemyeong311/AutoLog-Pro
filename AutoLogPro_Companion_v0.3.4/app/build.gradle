@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'kr.autologpro.companion'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'kr.autologpro.companion.demo'
+        minSdk 26
+        targetSdk 35
+        versionCode 8
+        versionName '0.3.4'
+    }
+
+    signingConfigs {
+        if (providers.gradleProperty('alpDebugKeystore').isPresent()) {
+            create('alpEmulator') {
+                storeFile file(providers.gradleProperty('alpDebugKeystore').get())
+                storePassword 'android'
+                keyAlias 'alp-emulator-demo'
+                keyPassword 'android'
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            if (signingConfigs.findByName('alpEmulator') != null) {
+                signingConfig signingConfigs.getByName('alpEmulator')
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation "com.google.zxing:core:3.5.4"
+}

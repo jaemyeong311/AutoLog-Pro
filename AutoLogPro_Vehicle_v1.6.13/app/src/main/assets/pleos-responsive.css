@@ -1,0 +1,306 @@
+/* Auto Log Pro / Pleos Connect split-screen layout
+ * Design intent: preserve the supplied original 1280x720 HTML, reflow it in the
+ * roughly 790x560 *app pane* shown in Pleos (not the entire car display).
+ * These adjustments do not add or emulate any vehicle SDK functions.
+ */
+html, body { max-width: 100%; max-height: 100%; }
+#main-viewport, #sidebar, .screen-view { min-width: 0; }
+.screen-view { overscroll-behavior: contain; }
+button, .nav-item, .filter-pill, .clickable { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, .nav-item:focus-visible, .filter-pill:focus-visible {
+  outline: 2px solid #9fbfdf; outline-offset: 2px;
+}
+/* Precise visible pane: shrink structural furniture, not the whole document. */
+@media (max-width: 1024px) {
+  #sidebar { width: 144px; min-width: 144px; padding: 12px 0; }
+  .brand-logo { gap: 7px; padding: 4px 9px 16px; align-items: center; }
+  .brand-logo svg { width: 19px; height: 19px; }
+  .brand-title { font-size: 13.5px; white-space: nowrap; letter-spacing: -.4px; }
+  .nav-group { padding: 12px 7px 0; gap: 3px; }
+  .bottom-nav { padding: 0 7px; }
+  .nav-item { height: 43px; gap: 9px; padding: 0 9px; border-radius: 7px; font-size: 13px; white-space: nowrap; }
+  .nav-item svg { width: 17px; height: 17px; }
+  .nav-item.active::before { width: 3px; top: 8px; bottom: 8px; }
+  #main-viewport { min-width:0; flex: 1 1 0; overflow: hidden; }
+  .screen-view { width: 100%; height: 100%; padding: 12px 16px 13px; overflow-y: auto; overflow-x: hidden; }
+  .screen-view::-webkit-scrollbar, .scroll-table-body::-webkit-scrollbar, .drawer-body::-webkit-scrollbar { width: 5px; }
+  .screen-view::-webkit-scrollbar-thumb, .scroll-table-body::-webkit-scrollbar-thumb, .drawer-body::-webkit-scrollbar-thumb { background:#3d4753; border-radius:6px; }
+  /* Home, same image/metrics/table design as the supplied mockup. */
+  .home-upper { flex-shrink: 0; height: 52%; min-height: 0; gap: 10px; }
+  .home-car-section { flex: 1; min-width: 0; grid-template-rows: auto minmax(0,1fr) auto; }
+  .car-status-label { font-size: 13px; }
+  .car-image-container { margin: 3px 0 5px; }
+  .car-render-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .home-odometer-box { margin-bottom: 1px; }
+  .odo-label { font-size: 12px; margin-bottom: 2px; }
+  .odo-number { font-size: clamp(27px, 4.2vw, 36px); letter-spacing: -.7px; }
+  .odo-unit { font-size: 17px; }
+  .odo-saved-status { margin-top: 3px; font-size: 12px; }
+  .home-summary-card { flex: 0 0 42%; width: 42%; padding: 12px 13px; border-radius: 11px; box-shadow: none; }
+  .card-header-title { font-size: 15px; letter-spacing: -.2px; }
+  .summary-metrics { gap: 10px; margin: 8px 0; }
+  .metric-row { gap: 7px; font-size: 12.5px; }
+  .metric-label { min-width: 0; }
+  .metric-val { white-space: nowrap; font-size: 13px; }
+  .summary-action-wrapper { padding-top: 6px; min-height: 43px !important; }
+  .touch-hit-wrapper-64 { height: 44px; }
+  .btn-unclassified-action { width: auto; min-width: 78px; height: 42px; padding: 0 10px; border-radius: 6px; font-size: 12.5px; box-shadow: none; }
+  .home-lower { flex: 1 0 auto; min-height: 0; margin-top: 8px; padding-top: 6px; gap: 4px; }
+  .home-lower .recent-header-row { height: 41px; flex-shrink: 0; }
+  .recent-title { font-size: 15px; }
+  .home-lower .btn-view-all-hit { height: 43px; min-height: 43px !important; }
+  .home-lower .btn-view-all-hit button { height: 40px !important; font-size: 12.5px !important; padding: 0 11px; border-radius: 6px; }
+  .car-table { font-size: 12.5px; }
+  .car-table th { font-size: 11.5px; padding: 7px 6px; }
+  .car-table td { padding: 9px 6px; line-height: 1.25; }
+  .home-lower .car-table { table-layout: fixed; }
+  .home-lower .car-table td:nth-child(1), .home-lower .car-table th:nth-child(1){ width: 19%; }
+  .home-lower .car-table td:nth-child(2), .home-lower .car-table th:nth-child(2){ width: 43%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .home-lower .car-table td:nth-child(3), .home-lower .car-table th:nth-child(3){ width: 13%; white-space:nowrap; }
+  .home-lower .car-table td:nth-child(4), .home-lower .car-table th:nth-child(4){ width: 11%; white-space:nowrap; }
+  .home-lower .car-table td:nth-child(5), .home-lower .car-table th:nth-child(5){ width: 14%; white-space:nowrap; }
+  .tag-badge { padding: 3px 7px; border-radius: 5px; font-size: 11.5px; white-space: nowrap; }
+  .demo-caption { left: 8px; bottom: 52px; font-size: 10px; }
+  .demo-native { bottom: 5px; right: 14px; height: 38px; padding: 0 12px; font-size: 12px; z-index: 10; }
+  /* Subpages: keep original arrangement but maximize readable information. */
+  .sub-header { margin-bottom: 12px; gap: 8px; flex-shrink: 0; }
+  .sub-title-group { gap: 9px; }
+  .sub-title { font-size: 21px; white-space: nowrap; }
+  .month-picker { padding: 8px 10px; font-size: 12px; gap: 5px; border-radius: 7px; white-space:nowrap; }
+  .filter-pills { gap: 4px; flex-wrap: nowrap; min-width: 0; }
+  .filter-pill { padding: 8px 8px; font-size: 12px; border-radius: 14px; white-space: nowrap; }
+  .btn-primary-action { height: 42px; font-size: 12.5px; padding: 0 11px; border-radius: 7px; white-space: nowrap; }
+  .table-container { border-radius: 10px; min-height: 130px; }
+  .table-container > table, .table-container .scroll-table-body > table { table-layout: fixed; width:100%; }
+  #view-logs .car-table th, #view-logs .car-table td { padding: 10px 6px; }
+  #view-logs .car-table td:nth-child(1) { width: 100px !important; }
+  #view-logs .car-table td:nth-child(3) { width: 70px !important; }
+  #view-logs .car-table td:nth-child(4) { width: 54px !important; }
+  #view-logs .car-table td:nth-child(5) { width: 75px !important; }
+  #view-logs .car-table td:nth-child(6) { width: 20px !important; }
+  #view-logs .car-table td:nth-child(2) { width:auto!important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .maint-stat-row { gap: 9px; margin-bottom: 11px; }
+  .maint-stat-box { padding: 10px 12px; border-radius: 9px; }
+  .maint-stat-val { font-size: 17px; overflow-wrap:anywhere; }
+  #view-maintenance .car-table th, #view-maintenance .car-table td { padding: 10px 5px; }
+  /* Original 140+130+130+110+90px header widths left almost zero for the
+     maintenance description at 790px. Explicit proportions fix that defect. */
+  #view-maintenance .car-table th:nth-child(1), #view-maintenance .car-table td:nth-child(1) { width:15% !important; white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(2), #view-maintenance .car-table td:nth-child(2) { width:31% !important; }
+  #view-maintenance .car-table th:nth-child(3), #view-maintenance .car-table td:nth-child(3) { width:18% !important; white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(4), #view-maintenance .car-table td:nth-child(4) { width:15% !important; white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(5), #view-maintenance .car-table td:nth-child(5) { width:12% !important; white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(6), #view-maintenance .car-table td:nth-child(6) { width:9% !important; }
+  #view-maintenance .car-table td:nth-child(2), #view-maintenance .car-table td:nth-child(6) { max-width:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  /* The 6-column tax table cannot fit a 400px preview. Show a legible 4-col
+   * in-car summary; the exported HTML and CSV remain unchanged/full-width. */
+  .report-layout { flex:1; min-height:0; gap: 11px; height:auto; }
+  .report-preview-sheet { flex:1; min-width:0; padding: 11px 12px; border-radius: 10px; }
+  .report-side-panel { width: 38%; min-width: 184px; gap: 9px; }
+  .side-card { padding: 10px 12px; border-radius: 10px; }
+  .sheet-header { padding-bottom: 8px; margin-bottom: 10px; }
+  .sheet-title { font-size: 14px; }
+  .sheet-meta { font-size: 10px; }
+  #view-reports .report-preview-sheet .car-table { table-layout:fixed; font-size:11px; }
+  #view-reports .report-preview-sheet .car-table th, #view-reports .report-preview-sheet .car-table td { padding: 9px 4px; }
+  #view-reports .report-preview-sheet .car-table th:nth-child(3), #view-reports .report-preview-sheet .car-table th:nth-child(4),
+  #view-reports .report-preview-sheet .car-table td:nth-child(3), #view-reports .report-preview-sheet .car-table td:nth-child(4) { display:none; }
+  #view-reports .report-preview-sheet .car-table td:nth-child(1) { width:28%; }
+  #view-reports .report-preview-sheet .car-table td:nth-child(2) { width:26%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #view-reports .report-preview-sheet .car-table td:nth-child(5) { width:25%; white-space:nowrap; }
+  #view-reports .report-preview-sheet .car-table td:nth-child(6) { width:21%; white-space:nowrap; }
+  #view-reports .side-card h3, #view-reports .side-card strong { font-size:14px; }
+  .demo-qr { min-height:42px; margin-top:7px; }
+  /* Statistics: same three top cards and two graphs, scaled to narrow panel. */
+  .stats-top-grid { gap:10px; margin-bottom:11px; }
+  .stat-card-highlight { padding:12px 13px; gap:4px; border-radius: 10px; min-width:0; }
+  .stat-card-highlight .num { font-size: 23px; white-space:nowrap; }
+  .stats-content-grid { grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:11px; min-height:190px; }
+  .chart-card { padding:12px; min-width:0; border-radius:10px; }
+  .bar-chart-mock { gap:9px; padding: 13px 3px 7px; }
+  .bar-fill { width: clamp(17px,2.8vw,28px); }
+  .bar-val-text { font-size:10px; white-space:nowrap; }
+  .bar-label-text { font-size:11px; }
+  /* Settings rows stay readable and clickable. */
+  .settings-list-card { border-radius:10px; }
+  .setting-row { padding:13px 15px; gap:8px; }
+  .setting-title { font-size:14px; }
+  .setting-desc { font-size:11.5px; }
+  .setting-right { flex-shrink:0; }
+  /* Detail and add-maintenance drawers use available screen rather than 440px. */
+  .slide-drawer { width:min(88%,410px); padding:18px 20px; right:-100%; overflow:hidden; }
+  .drawer-header { margin-bottom:13px; padding-bottom:12px; }
+  .drawer-title { font-size:19px; }
+  .drawer-body { gap:11px; }
+  .form-group { gap:7px; }
+  .form-input { padding:9px 10px; font-size:14px; }
+  .purpose-btn { min-height:42px; font-size:13px; }
+}
+/* Extra narrow head unit / smaller split-screen pane. */
+@media (max-width: 700px) {
+  #sidebar { width: 112px; min-width:112px; }
+  .brand-logo { gap:4px; padding: 4px 7px 13px; }
+  .brand-logo svg { width:16px; }
+  .brand-title { font-size:11.5px; letter-spacing:-.6px; }
+  .nav-group { padding: 10px 4px 0; }
+  .nav-item { font-size:12px; padding:0 6px; gap:5px; }
+  .nav-item svg { width:15px; }
+  .bottom-nav { padding: 0 4px; }
+  .screen-view { padding:10px 10px 12px; }
+  .home-upper { gap:8px; }
+  .home-summary-card { flex-basis:44%; width:44%; padding:10px; }
+  .card-header-title { font-size:13px; }
+  .metric-row { font-size:11px; }
+  .metric-val { font-size:11.5px; }
+  .odo-number { font-size:27px; }
+  .car-table { font-size:11px; }
+  .car-table th { font-size:10px; }
+  .car-table td { padding:8px 4px; }
+  .sub-title { font-size:18px; }
+  .month-picker { font-size:11px; padding:7px; }
+  .filter-pill { font-size:10px; padding:8px 5px; }
+  .report-side-panel { min-width:150px; width:38%; }
+  #view-maintenance .car-table th:nth-child(1), #view-maintenance .car-table td:nth-child(1) { width:19% !important; }
+  #view-maintenance .car-table th:nth-child(2), #view-maintenance .car-table td:nth-child(2) { width:37% !important; }
+  #view-maintenance .car-table th:nth-child(3), #view-maintenance .car-table td:nth-child(3) { width:24% !important; }
+  #view-maintenance .car-table th:nth-child(4), #view-maintenance .car-table td:nth-child(4) { width:20% !important; }
+  #view-maintenance .car-table th:nth-child(5), #view-maintenance .car-table td:nth-child(5),
+  #view-maintenance .car-table th:nth-child(6), #view-maintenance .car-table td:nth-child(6) { display:none; }
+  .stats-top-grid { gap:6px; }
+  .stat-card-highlight { padding:9px; }
+  .stat-card-highlight .num { font-size:19px; }
+  .stats-content-grid { grid-template-columns:1fr; }
+  #view-stats .screen-view, #view-stats { overflow-y:auto; }
+}
+/* Short Pleos app pane due to top/bottom car-system UI. */
+@media (max-height: 610px) {
+  .home-upper { height: 51%; }
+  .home-lower { margin-top:6px; padding-top:5px; }
+  .home-lower .recent-header-row { height:38px; }
+  .home-lower .car-table th { padding:5px 6px; }
+  .home-lower .car-table td { padding:7px 6px; }
+  .maint-stat-row { margin-bottom:9px; }
+  .sub-header { margin-bottom:9px; }
+  .report-layout { gap:9px; }
+  .stats-content-grid { min-height:170px; }
+  .settings-list-card .setting-row { padding-top:10px; padding-bottom:10px; }
+}
+
+
+/* v1.3 — Pleos native split-pane readability fix (maintenance + statistics).
+   The native car/AC bars are outside this WebView. Never scale the page as a whole. */
+@media (max-width: 1200px) {
+  /* Maintenance: turn the unusable final vendor column into a readable secondary line.
+     Room/SQLite records still keep the vendor; nothing is removed from stored data. */
+  #view-maintenance .table-container { min-width:0; }
+  #view-maintenance .car-table { width:100%;table-layout:fixed; font-variant-numeric: tabular-nums; }
+  #view-maintenance .car-table th,
+  #view-maintenance .car-table td { padding:10px 6px; vertical-align:middle; line-height:1.35; }
+  #view-maintenance .car-table th { font-size:11.5px;white-space:nowrap; }
+  #view-maintenance .car-table td { font-size:12px; }
+  #view-maintenance .car-table th:nth-child(1),
+  #view-maintenance .car-table td:nth-child(1) { width:17% !important; white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(2),
+  #view-maintenance .car-table td:nth-child(2) { width:38% !important; }
+  #view-maintenance .car-table th:nth-child(3),
+  #view-maintenance .car-table td:nth-child(3) { width:19% !important;white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(4),
+  #view-maintenance .car-table td:nth-child(4) { width:15% !important;white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(5),
+  #view-maintenance .car-table td:nth-child(5) { width:11% !important;white-space:nowrap; }
+  #view-maintenance .car-table th:nth-child(6),
+  #view-maintenance .car-table td:nth-child(6) { display:none !important; }
+  #view-maintenance .maint-item-cell { min-width:0;overflow:hidden; white-space:normal; }
+  #view-maintenance .maint-item-main { display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#fff; }
+  #view-maintenance .maint-shop-subline { display:block;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-muted);font-size:10.5px;font-weight:400; }
+  #view-maintenance .receipt-unavailable { color:var(--text-secondary);font-size:11px;white-space:nowrap; }
+  /* Summary cards: keep the odometer and sample disclaimer separate and legible. */
+  #view-maintenance .maint-stat-row { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  #view-maintenance .maint-stat-box { min-width:0;overflow:hidden; }
+  #view-maintenance .maint-stat-val { display:flex;flex-wrap:wrap;gap:3px 7px;align-items:baseline;white-space:normal;overflow-wrap:normal;word-break:keep-all;line-height:1.32;font-variant-numeric:tabular-nums; }
+  #view-maintenance .maint-next-distance { white-space:nowrap; }
+  #view-maintenance .maint-next-note { white-space:nowrap;color:var(--text-muted);font-size:10.5px;font-weight:400; }
+  /* Stats: two explicit columns protect number strings and Korean labels
+     from splitting into individual characters in narrow Android WebView panes. */
+  #view-stats .stats-content-grid {min-width:0;}
+  #view-stats .stats-content-grid > .chart-card { min-width:0;overflow:hidden; }
+  #view-stats .stats-purpose-list {gap:13px !important;min-width:0;}
+  #view-stats .stats-purpose-line {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) max-content;
+    align-items:center;
+    gap:6px;
+    min-width:0;
+    font-size:12px !important;
+    line-height:1.35;
+  }
+  #view-stats .stats-purpose-label {
+    display:block;min-width:0;max-width:100%;overflow:hidden;
+    white-space:nowrap;text-overflow:ellipsis;word-break:keep-all;
+  }
+  #view-stats .stats-purpose-value {
+    display:block;min-width:0;text-align:right;white-space:nowrap;
+    font-size:11.5px;font-variant-numeric:tabular-nums;
+  }
+  #view-stats .stat-card-highlight {min-width:0;overflow:hidden;}
+  #view-stats .stat-card-highlight .num {font-variant-numeric:tabular-nums; white-space:nowrap;}
+  #view-stats .stat-card-highlight > div:last-child {font-size:11px !important;line-height:1.3;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;min-width:0;}
+  #view-stats .stats-content-grid > .chart-card > div:first-child {font-size:14px !important;line-height:1.45;}
+  #view-stats .bar-chart-mock {min-width:0;gap:7px;}
+  #view-stats .bar-val-text {font-variant-numeric:tabular-nums;}
+}
+/* This pane is narrower than the Pleos screenshots; preserve four high-value columns. */
+@media (max-width: 700px) {
+  #view-maintenance .car-table th:nth-child(1),#view-maintenance .car-table td:nth-child(1) {width:20% !important;}
+  #view-maintenance .car-table th:nth-child(2),#view-maintenance .car-table td:nth-child(2) {width:41% !important;}
+  #view-maintenance .car-table th:nth-child(3),#view-maintenance .car-table td:nth-child(3) {width:22% !important;}
+  #view-maintenance .car-table th:nth-child(4),#view-maintenance .car-table td:nth-child(4) {width:17% !important;}
+  #view-maintenance .car-table th:nth-child(5),#view-maintenance .car-table td:nth-child(5) {display:none !important;}
+  #view-stats .stats-content-grid {grid-template-columns:1fr;}
+  #view-stats .stats-purpose-value {font-size:12.5px;}
+}
+/* On short Pleos panels the chart can scroll inside the page without clipping. */
+@media (max-height: 610px) {
+  #view-maintenance .maint-stat-row {margin-bottom:8px;}
+  #view-maintenance .car-table th,#view-maintenance .car-table td {padding-top:8px;padding-bottom:8px;}
+  #view-stats .stats-purpose-list {gap:10px !important;}
+  #view-stats .stats-content-grid {min-height:0;}
+}
+
+/* Final AAOS WebView width calibration: 1025–1200px panes still need a
+   compact, single-line brand. The original headline remains on 1280px. */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  #sidebar .brand-logo {gap:8px;padding:8px 12px 20px;}
+  #sidebar .brand-logo svg {width:21px;height:21px;flex-shrink:0;}
+  #sidebar .brand-title {font-size:15.5px;white-space:nowrap;letter-spacing:-.35px;}
+  #view-maintenance .maint-stat-row {gap:11px;}
+  #view-stats .stats-content-grid {gap:13px;grid-template-columns:minmax(0,1.14fr) minmax(0,1fr);}
+  #view-stats .chart-card {padding:13px;}
+}
+@media (max-width: 1200px) {
+  /* 2% more space avoids clipping the '영수증 보기' label at 790x560. */
+  #view-maintenance .car-table th:nth-child(2),#view-maintenance .car-table td:nth-child(2) {width:36% !important;}
+  #view-maintenance .car-table th:nth-child(5),#view-maintenance .car-table td:nth-child(5) {width:13% !important;}
+}
+@media (max-width: 700px) {
+  #view-maintenance .car-table th:nth-child(2),#view-maintenance .car-table td:nth-child(2) {width:41% !important;}
+  #view-maintenance .car-table th:nth-child(5),#view-maintenance .car-table td:nth-child(5) {display:none !important;}
+}
+
+/* Closed drawers must never cover or intercept the active screen. */
+.slide-drawer:not(.open) {
+  right: 0;
+  transform: translateX(calc(100% + 36px));
+  visibility: hidden;
+  pointer-events: none;
+}
+#view-reports .report-preview-sheet { min-width: 0; }
+#view-reports .sheet-header { align-items: flex-start; flex-direction: column; gap: 5px; }
+#view-reports .sheet-meta { text-align: left; overflow-wrap: anywhere; }
+#view-reports .report-preview-sheet .car-table { table-layout: auto; }
+#view-reports .report-preview-sheet .car-table :is(th,td):nth-child(n) {
+  display: table-cell; width: auto; white-space: nowrap; max-width: none; text-overflow: clip;
+}
+#drawer-logbook-profile .drawer-header h2 { font-size: 20px; color: var(--text-primary); }
+#drawer-logbook-profile .drawer-body { min-height: 0; }
+#logbook-profile-form .form-group { margin-bottom: 12px; }
