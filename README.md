@@ -63,7 +63,7 @@ https://github.com/user-attachments/assets/74464e62-e52a-4369-a2fe-2e6f9adf5ef1
 
 | 용도 | 로그인 이메일 | 비밀번호 | 권한 및 확인 범위 |
 | --- | --- | --- | --- |
-| 차량 앱 | `car@demo.autolog.invalid` | `bm78-xw54` | 차량 단말(`vehicle`) · `12가3456 아반떼 하이브리드` |
+| 차량 앱 | `car@demo.autolog.invalid` | `bm78-xw54` | 차량 단말(`vehicle`) · `12가3456 제네시스 GV90` |
 | 휴대폰 앱 | `lee.sales@demo.autolog.invalid` | `zAYCt1yNc7jTAXdBGAKjnvro` | 일반 직원(`employee`) · 이영업에게 배정된 시연 운행만 조회·수정 가능 |
 
 **연동 확인 시 차량 앱에서 운전자를 `이영업 · 영업팀`으로 지정해 주세요.** 운전자가 미지정이거나 다른 직원으로 지정된 운행은 이 휴대폰 계정에 표시되지 않습니다.
