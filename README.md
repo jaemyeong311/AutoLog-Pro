@@ -6,7 +6,23 @@ AutoLog Pro는 차량에서 공용 법인차의 운행을 기록하고, 직원�
 
 ## 전체 시연 영상
 
+**무음 버전 · 2분 15초**
+
 https://github.com/user-attachments/assets/74464e62-e52a-4369-a2fe-2e6f9adf5ef1
+
+[소리 있는 전체 시연 영상 열기 (MP4 · 2분 15초)](./demo/AutoLogPro_Demo.mp4)
+
+## 앱 화면
+
+### 차량용 앱 · 주행 완료
+
+![차량용 앱의 주행 완료 및 운행 목적 선택 화면](./docs/screenshots/vehicle-trip-complete.png)
+
+### 휴대폰용 앱
+
+| 운행 상세 | 업무용 운행기록부 |
+| :---: | :---: |
+| ![휴대폰 앱 운행 상세 화면](./docs/screenshots/companion-trip-detail.png) | ![휴대폰 앱 업무용 운행기록부 화면](./docs/screenshots/companion-logbook.png) |
 
 ## 프로젝트 구성
 
