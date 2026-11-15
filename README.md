@@ -4,6 +4,10 @@
 
 AutoLog Pro는 차량에서 공용 법인차의 운행을 기록하고, 직원이 휴대폰에서 운행 목적과 메모를 정리해 업무용 운행기록부를 만들 수 있는 Pleos Connect 기반 앱입니다.
 
+## 전체 시연 영상
+
+https://github.com/user-attachments/assets/74464e62-e52a-4369-a2fe-2e6f9adf5ef1
+
 ## 프로젝트 구성
 
 | 구성 | 소스 폴더 | 주요 기능 |
